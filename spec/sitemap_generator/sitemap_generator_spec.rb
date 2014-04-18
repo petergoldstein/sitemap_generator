@@ -27,17 +27,17 @@ describe "SitemapGenerator" do
 
     it "should set a new LinkSet instance" do
       first = SitemapGenerator::Sitemap.instance_variable_get(:@link_set)
-      first.should be_a(SitemapGenerator::LinkSet)
+      expect(first).to be_a(SitemapGenerator::LinkSet)
       SitemapGenerator::Sitemap.reset!
       second = SitemapGenerator::Sitemap.instance_variable_get(:@link_set)
-      second.should be_a(SitemapGenerator::LinkSet)
-      first.should_not be(second)
+      expect(second).to be_a(SitemapGenerator::LinkSet)
+      expect(first).not_to be(second)
     end
   end
 
   describe "root" do
     it "should be set to the root of the gem" do
-      SitemapGenerator.root.should == File.expand_path('../../../' , __FILE__)
+      expect(SitemapGenerator.root).to eq(File.expand_path('../../../' , __FILE__))
     end
   end
 
@@ -57,7 +57,7 @@ describe "SitemapGenerator" do
     end
 
     it "should have 13 links" do
-      SitemapGenerator::Sitemap.link_count.should == 13
+      expect(SitemapGenerator::Sitemap.link_count).to eq(13)
     end
 
     it "index XML should validate" do
@@ -105,7 +105,7 @@ describe "SitemapGenerator" do
     end
 
     it "should have 16 links" do
-      SitemapGenerator::Sitemap.link_count.should == 16
+      expect(SitemapGenerator::Sitemap.link_count).to eq(16)
     end
 
     it "index XML should validate" do
@@ -282,7 +282,7 @@ describe "SitemapGenerator" do
   describe "external dependencies" do
     it "should work outside of Rails" do
       Object.stubs(:Rails => nil)
-      lambda { ::SitemapGenerator::LinkSet.new }.should_not raise_exception
+      expect { ::SitemapGenerator::LinkSet.new }.not_to raise_exception
     end
   end
 
@@ -291,10 +291,10 @@ describe "SitemapGenerator" do
       original = SitemapGenerator.verbose
       SitemapGenerator.verbose = nil
       ENV['VERBOSE'] = 'true'
-      SitemapGenerator.verbose.should be_true
+      expect(SitemapGenerator.verbose).to be_true
       SitemapGenerator.verbose = nil
       ENV['VERBOSE'] = 'false'
-      SitemapGenerator.verbose.should be_false
+      expect(SitemapGenerator.verbose).to be_false
       SitemapGenerator.verbose = original
     end
   end
@@ -302,9 +302,9 @@ describe "SitemapGenerator" do
   describe "yield_sitemap" do
     it "should set the yield_sitemap flag" do
       SitemapGenerator.yield_sitemap = false
-      SitemapGenerator.yield_sitemap?.should be_false
+      expect(SitemapGenerator.yield_sitemap?).to be_false
       SitemapGenerator.yield_sitemap = true
-      SitemapGenerator.yield_sitemap?.should be_true
+      expect(SitemapGenerator.yield_sitemap?).to be_true
       SitemapGenerator.yield_sitemap = false
     end
   end
@@ -326,7 +326,7 @@ describe "SitemapGenerator" do
         with_max_links(1) do
           ls.create { add('/one') }
         end
-        ls.sitemap_index.link_count.should == 1 # one sitemap
+        expect(ls.sitemap_index.link_count).to eq(1) # one sitemap
         file_should_exist(rails_path('public/sitemap.xml.gz'))
         file_should_exist(rails_path('public/sitemap1.xml.gz'))
         file_should_not_exist(rails_path('public/sitemap2.xml.gz'))
@@ -343,7 +343,7 @@ describe "SitemapGenerator" do
         with_max_links(1) do
           ls.create { add('/one'); add('/two') }
         end
-        ls.sitemap_index.link_count.should == 2 # two sitemaps
+        expect(ls.sitemap_index.link_count).to eq(2) # two sitemaps
         file_should_exist(rails_path('public/sitemap.xml.gz'))
         file_should_exist(rails_path('public/sitemap1.xml.gz'))
         file_should_exist(rails_path('public/sitemap2.xml.gz'))
@@ -367,7 +367,7 @@ describe "SitemapGenerator" do
         with_max_links(1) do
           ls.create { add('/one') }
         end
-        ls.sitemap_index.link_count.should == 1 # one sitemap
+        expect(ls.sitemap_index.link_count).to eq(1) # one sitemap
         file_should_exist(rails_path('public/sitemap.xml.gz'))
         file_should_not_exist(rails_path('public/sitemap1.xml.gz'))
         gzipped_xml_file_should_validate_against_schema rails_path('public/sitemap.xml.gz'), 'sitemap'
@@ -382,7 +382,7 @@ describe "SitemapGenerator" do
         with_max_links(1) do
           ls.create { add('/one'); add('/two') }
         end
-        ls.sitemap_index.link_count.should == 2 # two sitemaps
+        expect(ls.sitemap_index.link_count).to eq(2) # two sitemaps
         file_should_exist(rails_path('public/sitemap.xml.gz'))
         file_should_exist(rails_path('public/sitemap1.xml.gz'))
         file_should_not_exist(rails_path('public/sitemap2.xml.gz'))
@@ -403,7 +403,7 @@ describe "SitemapGenerator" do
         with_max_links(1) do
           ls.create { add('/one') }
         end
-        ls.sitemap_index.link_count.should == 1 # one sitemap
+        expect(ls.sitemap_index.link_count).to eq(1) # one sitemap
         file_should_exist(rails_path('public/sitemap.xml.gz'))
         file_should_not_exist(rails_path('public/sitemap1.xml.gz'))
         gzipped_xml_file_should_validate_against_schema rails_path('public/sitemap.xml.gz'), 'sitemap'
@@ -418,7 +418,7 @@ describe "SitemapGenerator" do
         with_max_links(1) do
           ls.create { add('/one'); add('/two') }
         end
-        ls.sitemap_index.link_count.should == 2 # two sitemaps
+        expect(ls.sitemap_index.link_count).to eq(2) # two sitemaps
         file_should_exist(rails_path('public/sitemap.xml.gz'))
         file_should_exist(rails_path('public/sitemap1.xml.gz'))
         file_should_exist(rails_path('public/sitemap2.xml.gz'))
@@ -440,7 +440,7 @@ describe "SitemapGenerator" do
             group(:filename => :group2) { add('/two') };
           end
         end
-        ls.sitemap_index.link_count.should == 2 # two sitemaps
+        expect(ls.sitemap_index.link_count).to eq(2) # two sitemaps
         file_should_exist(rails_path('public/sitemap.xml.gz'))
         file_should_exist(rails_path('public/group1.xml.gz'))
         file_should_exist(rails_path('public/group2.xml.gz'))
