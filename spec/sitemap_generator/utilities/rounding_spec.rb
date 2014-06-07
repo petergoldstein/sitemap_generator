@@ -13,7 +13,7 @@ describe SitemapGenerator::Utilities do
       expect(utils.round(1.45, 1)) .to eq(1.5)
       expect(utils.round(1.445, 2)).to eq(1.45)
       # Demonstrates a bug in the round method
-      # utils.round(9.995, 2).should == 10 
+      # expect(utils.round(9.995, 2)).to eq(10)
     end
 
     it "should round for negative number" do
